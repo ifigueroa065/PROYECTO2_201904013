@@ -107,61 +107,60 @@
         }
 
         function Registrar() {
-            var nombreR = document.querySelector('#nombreR').value
-            var apellidoR = document.querySelector('#apellidoR').value
-            var usuarioR = document.querySelector('#usuarioR').value
-            var contraR = document.querySelector('#contraR').value
-            var contraRR = document.querySelector('#contraRR').value
-
-            var objecto = {
-                'nombreR': nombreR,
-                'apellidoR': apellidoR,
-                'usuarioR': usuarioR,
-                'contraR': contraR,
-                'contraRR': contraRR
-            }
-            console.log(objecto)
-
-            fetch('http://127.0.0.1:3000/Registrar/', {
-                method: 'POST',
-                body: JSON.stringify(objecto),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-
-            }).then(res => res.json())
-                .catch(err => {
-                    console.error('Error:', err)
-                    alert("Ocurrio un error, ver la consola")
-                })
-                .then(response => {
-                    console.log(response);
-                    console.log(response.message)
-                    if (response.message == "Failed") {
-                        if (response.motivo == "EL USUARIO YA EXISTE") {
-                            alert("EL USUARIO YA EXISTE")
-                        } else
-                            alert("NO COINCIDEN CONTRASEÑAS")
-                        {
-                            
-                        }
-
-                    } else {
-                        alert("SE REGISTRÓ CORRECTAMENTE")
-                        var A = document.getElementById("nombreR");
-                        A.value = ""
-                        var B = document.getElementById("apellidoR");
-                        B.value = ""
-                        var C = document.getElementById("usuarioR");
-                        C.value = ""
-                        var D = document.getElementById("contraR");
-                        D.value = ""
-                        var E = document.getElementById("contraRR");
-                        E.value = ""
+                    var nombreR = document.querySelector('#nombreR').value
+                    var apellidoR = document.querySelector('#apellidoR').value
+                    var usuarioR = document.querySelector('#usuarioR').value
+                    var contraR = document.querySelector('#contraR').value
+                    var contraRR = document.querySelector('#contraRR').value
+        
+                    var objecto = {
+                        'nombreR': nombreR,
+                        'apellidoR': apellidoR,
+                        'usuarioR': usuarioR,
+                        'contraR': contraR,
+                        'contraRR': contraRR
                     }
-                })
-        }
-
+                    console.log(objecto)
+                    
+                    fetch('http://127.0.0.1:3000/Registrar/', {
+                        method: 'POST',
+                        body: JSON.stringify(objecto),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+        
+                    }).then(res => res.json())
+                        .catch(err => {
+                            console.error('Error:', err)
+                            alert("Ocurrio un error, ver la consola")
+                        })
+                        .then(response => {
+                            console.log(response);
+                            console.log(response.message)
+                            if (response.message == "Failed") {
+                                if (response.motivo == "EL USUARIO YA EXISTE") {
+                                    alert("EL USUARIO YA EXISTE")
+                                } else
+                                    alert("NO COINCIDEN CONTRASEÑAS")
+                                {
+                                    
+                                }
+        
+                            } else {
+                                alert("SE REGISTRÓ CORRECTAMENTE")
+                                var A = document.getElementById("nombreR");
+                                A.value = ""
+                                var B = document.getElementById("apellidoR");
+                                B.value = ""
+                                var C = document.getElementById("usuarioR");
+                                C.value = ""
+                                var D = document.getElementById("contraR");
+                                D.value = ""
+                                var E = document.getElementById("contraRR");
+                                E.value = ""
+                            }
+                        })
+                }
     </script>
 </body>
 

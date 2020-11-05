@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>SOLICITUD</title>
+        <title>MODIFICAR</title>
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
@@ -15,7 +15,7 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
     </head>
-    <body id="page-top">
+    <body id="page-top" onload="CargarInfo()">
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
             <a class="navbar-brand js-scroll-trigger" href="#page-top">
@@ -25,7 +25,7 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">SOLICITUD</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">MODIFICAR</a></li>
                 </ul>
             </div>
         </nav>
@@ -47,35 +47,40 @@
                                        <form>
   <div class="form-group">
     <label for="formGroupExampleInput">Nombre Canción</label>
-    <input type="text" class="form-control"  placeholder="XXX">
+    <input id="nombre" type="text" class="form-control"  >
   </div>
 
   <div class="form-group">
     <label for="formGroupExampleInput2">Artista/Banda</label>
-    <input type="text" class="form-control"  placeholder="XXXXX">
+    <input id="artista" type="text" class="form-control"  >
   </div>
 
   <div class="form-group">
   <label for="formGroupExampleInput">Album</label>
-    <input type="text" class="form-control"  placeholder="XXXX">
+    <input id="album" type="text" class="form-control"  >
   </div>
 
   <div class="form-group">
+    <label for="formGroupExampleInput">Enlace de Imagen</label>
+      <input id="imagen" type="text" class="form-control" >
+    </div>
+
+  <div class="form-group">
     <label for="formGroupExampleInput2">Fecha de Lanzamiento</label>
-    <input type="text" class="form-control"  placeholder="DD/MM/AA">
+    <input  id="fecha" type="text" class="form-control" >
   </div>
   <div class="form-group">
   <label for="formGroupExampleInput">Link Spotify</label>
-    <input type="text" class="form-control"  placeholder="link1">
+    <input id="spotify" type="text" class="form-control"  >
   </div>
 
   <div class="form-group">
     <label for="formGroupExampleInput2">Link Youtube</label>
-    <input type="text" class="form-control"  placeholder="link2">
+    <input id="youtube" type="text" class="form-control" >
   </div>
 </form>
 <center>
-<button type="button" class="btn btn-outline-dark">SOLICITAR</button>
+<button onclick="SOLICITAR()"  type="button" class="btn btn-outline-dark">MODIFICAR</button>
     
 </center>
                     <br>
@@ -100,14 +105,32 @@
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
          <!-- consumiendo API-->
-        <script >           
-            function IniciarSesion(){
-                location.href="INICIO.html"
-            }
+        <script >  
+         function CargarInfo(){
+                    var cancion=sessionStorage.ID
+                    var title= document.querySelector('#TITULO')
+                
+                fetch(`http://127.0.0.1:3000/CANCIONES/${cancion}`)
+                .then(response => response.json())
+                .catch(error => {
+                    console.error
+                })
+                .then(res=> {
+                    console.log(res)
 
-            function Registrar(){
-                location.href="index.html"
-            }
+                    document.querySelector("#nombre").value=res.nombre
+                    document.querySelector("#artista").value=res.artista
+                    document.querySelector("#album").value=res.album
+                    document.querySelector("#imagen").value=res.imagen
+                    document.querySelector("#fecha").value=res.fecha
+                    document.querySelector("#spotify").value=res.linkS
+                    document.querySelector("#youtube").value=res.linkYT
+                    
+
+                            
+                })
+                }         
+          
         </script>
     </body>
 </html>

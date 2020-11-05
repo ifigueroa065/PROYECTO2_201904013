@@ -29,7 +29,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#experience">MI PERFIL</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="CANCIONES.html">CANCIONES</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="PLAYLIST.html">MI PLAYLIST</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="SOLICITUD.html">SOLICITAR CANCION</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="SOLICITUD_CLIENTE.html">SOLICITAR CANCION</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#sesion">CERRAR SESIÓN</a></li>
                 </ul>
             </div>
@@ -89,7 +89,7 @@
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <iframe width="560" height="315" src="https://www.youtube.com/embed/vWFPduhaUB4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
-                    <button type="button" class="btn btn-primary btn-lg btn-block">CERRAR SESIÓN</button>
+                    <button onclick="CerrarSesion()" type="button" class="btn btn-primary btn-lg btn-block">CERRAR SESIÓN</button>
                 </div>
 
             </section>
@@ -140,6 +140,9 @@
 
             function Registrar(){
                 location.href="REGISTRO.html"
+            }
+            function CerrarSesion(){
+                location.href="INICIO.html"
             }
         </script>
     </body>

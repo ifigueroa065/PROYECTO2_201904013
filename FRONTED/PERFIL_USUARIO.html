@@ -107,7 +107,7 @@
                 }
         
                 function CargarInfo(){
-                    var valor=sessionStorage.US
+                    var valor=sessionStorage.usuario
                     var title= document.querySelector('#TITULO')
                 
                 fetch(`http://127.0.0.1:3000/Usuario/${valor}`)
@@ -134,7 +134,7 @@
                 }
 
                 function Modificar(){
-                    var logeado=sessionStorage.US
+                    var logeado=sessionStorage.usuario
 
                     var nombreM = document.querySelector('#nombre').value
                     var apellidoM = document.querySelector('#apellido').value

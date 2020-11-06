@@ -80,7 +80,8 @@
   </div>
 </form>
 <center>
-<button onclick="SOLICITAR()"  type="button" class="btn btn-outline-dark">MODIFICAR</button>
+<button onclick="MODIFICAR()"  type="button" class="btn btn-outline-dark">MODIFICAR</button>
+<button onclick="ELIMINAR()" type="button" class="btn btn-outline-danger">ELIMINAR</button>
     
 </center>
                     <br>
@@ -130,6 +131,53 @@
                             
                 })
                 }         
+            function MODIFICAR(){
+                    var cancion=sessionStorage.ID
+          
+                    var nombre = document.querySelector('#nombre').value
+                    var artista = document.querySelector('#artista').value
+                    var album = document.querySelector('#album').value
+                    var imagen = document.querySelector('#imagen').value
+                    var fecha = document.querySelector('#fecha').value
+                    var linkS = document.querySelector('#spotify').value
+                    var linkYT = document.querySelector('#youtube').value
+                    if(nombre!="" && artista!="" && album!="" && imagen!="" && fecha!="" && linkS!="" && linkYT != ""){
+                      var objecto = {
+                        'nombre': nombre,
+                        'artista': artista,
+                        'album': album,
+                        'imagen': imagen,
+                        'fecha': fecha,
+                        'linkS': linkS,
+                        'linkYT': linkYT
+                     }
+                    console.log(objecto)
+                    console.log(cancion)
+                    fetch(`http://127.0.0.1:3000/CANCIONES/${cancion}`, {
+                        method: 'PUT',
+                        body: JSON.stringify(objecto),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+        
+                    }).then(res => res.json())
+                        .catch(err => {
+                            console.error('Error:', err)
+                            alert("Ocurrio un error, ver la consola")
+                        })
+                        .then(response => {
+                            console.log(response);
+                            console.log(response.message)
+                            alert("Se modifico correctamente")
+                        })
+                    }else{
+                      alert("SE DEBEN LLENAR TODOS LOS CAMPOS")
+                    }
+                    
+
+
+                }
+
           
         </script>
     </body>

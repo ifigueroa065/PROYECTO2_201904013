@@ -245,14 +245,14 @@
                     var usuarioR = document.querySelector('#usuarioR').value
                     var contraR = document.querySelector('#contraR').value
                     var contraRR = document.querySelector('#contraRR').value
-        
-                    var objecto = {
+                    if(nombreR!="" && apellidoR!="" && usuarioR!="" && contraR!="" && contraRR!=""){
+                        var objecto = {
                         'nombreR': nombreR,
                         'apellidoR': apellidoR,
                         'usuarioR': usuarioR,
                         'contraR': contraR,
                         'contraRR': contraRR
-                    }
+                        }
                     console.log(objecto)
         
                     fetch('http://127.0.0.1:3000/RegistrarADMIN/', {
@@ -293,6 +293,10 @@
                                 E.value = ""
                             }
                         })
+                    }else{
+                        alert("SE DEBEN LLENAR TODOS LOS CAMPOS")
+                    }
+                    
                 }
                 function CargarInfo(){
                     var logeado=sessionStorage.usuario
@@ -323,12 +327,14 @@
 
                 function Modificar(){
                     var logeado=sessionStorage.usuario
+
                     var nombreM = document.querySelector('#nombre').value
                     var apellidoM = document.querySelector('#apellido').value
                     var usuarioM = document.querySelector('#usuario').value
                     var contraR = document.querySelector('#contra').value
                     var contraRR = document.querySelector('#contrar').value
-                    var objecto = {
+                    if(nombreM!="" && apellidoM!="" && usuarioM!="" && contraRR!="" && contraRR!=""){
+                        var objecto = {
                         'nombre': nombreM,
                         'apellido': apellidoM,
                         'usuario': usuarioM,
@@ -362,6 +368,10 @@
                                 alert("SE MODIFICÓ CORRECTAMENTE")
                             }
                         })
+                    }else{
+                        alert("SE DEBEN LLENAR TODOS LOS CAMPOS")
+                    }
+                    
 
 
                 }

@@ -32,6 +32,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">USUARIOS</a></li>
+                
             </ul>
         </div>
     </nav>
@@ -49,7 +50,8 @@
                         MUSIC STATION
                     </div>
                 </center>
-                
+                <button  type="button" class="btn btn-success">GENERAR REPORTE</button>
+                           
                 <table class="table table-sm table-dark">
                     <thead>
                         <tr>
@@ -66,12 +68,12 @@
                         </tr>
                     </thead>
                     <tbody id="TBODY">
-                       
+
                     </tbody>
                 </table>
-              
-                
-                
+
+
+
                 <br>
 
                 <p class="lead mb-5">Facultad de Ingeniería Usac</p>
@@ -95,16 +97,16 @@
     <script src="js/scripts.js"></script>
     <!-- consumiendo API-->
     <script>
-         function CargarInfo(){
-                   
-            var tablita= document.querySelector('#TBODY')
-                
-                fetch('http://127.0.0.1:3000/Usuario')
+        function CargarInfo() {
+
+            var tablita = document.querySelector('#TBODY')
+
+            fetch('http://127.0.0.1:3000/Usuario')
                 .then(response => response.json())
                 .catch(error => {
                     console.error
                 })
-                .then(res=> {
+                .then(res => {
                     console.log(res)
                     for (var i in res) {
                         console.log(res[i])
@@ -115,23 +117,41 @@
                             <th><center>${res[i].apellido}</center></th>
                             <th><center>${res[i].usuario}</center></th>
                             
-                            <th style="width: 20%;">
-                                <center><button onclick="verUsuario(this)" value="${res[i].usuario}" type="button" class="btn btn-info">Modificar</button></center>
+                            <th style="width: 10%;">
+                                <center><button onclick="verUsuario(this)" value="${res[i].usuario}" type="button" class="btn btn-info">MODIFICAR</button></center>
+                            </th>
+                            <th style="width: 10%;">
+                                <center><button  onclick="DELUSUARIO(this)" value="${res[i].usuario}" type="button" class="btn btn-danger">ELIMINAR</button></center>
                             </th>
                         </tr>
                             `
                     }
-                            
-                })
-                }
-         
-                function verUsuario(boton){
-                    var usuario=boton.value
-                    sessionStorage.setItem("buscar",usuario)
-                    location.href="PERFIL.html"
 
-                }
+                })
+        }
+
+        function verUsuario(boton) {
+            var usuario = boton.value
+            sessionStorage.setItem("US", usuario)
+            location.href = "PERFIL.html"
+
+        }
         
+        function DELUSUARIO(boton) {
+            var id = boton.value
+            fetch(`http://127.0.0.1:3000/Usuario/${id}`, {
+                method: 'DELETE'
+
+            }).then(res => res.json())
+                .catch(err => {
+                    console.error('Error:', err)
+                    alert("Ocurrio un error, ver la consola")
+                })
+                .then(response => {
+                    console.log(response);
+                    console.log(response.message)
+                })
+        }
 
     </script>
 </body>

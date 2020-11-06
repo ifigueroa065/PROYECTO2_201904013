@@ -112,8 +112,8 @@
                     var usuarioR = document.querySelector('#usuarioR').value
                     var contraR = document.querySelector('#contraR').value
                     var contraRR = document.querySelector('#contraRR').value
-        
-                    var objecto = {
+                    if(nombreR!="" && apellidoR!="" && usuarioR!="" && contraR!="" && contraRR!=""){
+                        var objecto = {
                         'nombreR': nombreR,
                         'apellidoR': apellidoR,
                         'usuarioR': usuarioR,
@@ -160,6 +160,10 @@
                                 E.value = ""
                             }
                         })
+                    }else{
+                        alert("DEBE LLENAR TODOS LOS CAMPOS")
+                    }
+                    
                 }
     </script>
 </body>

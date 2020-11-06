@@ -114,8 +114,8 @@
                     var FechaS = document.querySelector('#FechaS').value
                     var LinkSS = document.querySelector('#LinkSS').value
                     var LinkYTS = document.querySelector('#LinkYTS').value
-        
-                    var objecto = {
+                    if(NombreS!="" && ArtistaS!="" && AlbumS!="" && ImagenS!="" && FechaS!="" && LinkSS!="" && LinkYTS!=""){
+                        var objecto = {
                         'NombreS': NombreS,
                         'ArtistaS': ArtistaS,
                         'AlbumS': AlbumS,
@@ -142,6 +142,10 @@
                             console.log(response);
                             console.log(response.message)
                         })
+                    }else{
+                        alert("DEBE LLENAR TODOS LOS CAMPOS")
+                    }
+                   
                 }
         </script>
     </body>

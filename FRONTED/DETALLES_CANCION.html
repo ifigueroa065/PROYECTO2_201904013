@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>DETALLES</title>
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top" onload="CargarInfo()">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">
+                <span class="d-block d-lg-none">MUSIC STATION</span>
+                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/LOL.jpg" alt="" /></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#DETALLES">DETALLES</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Page Content-->
+        <div class="container-fluid p-0">
+            <!-- About-->
+            <section class="resume-section" id="DETALLES">
+                
+            </section>
+            
+           
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+         <!-- consumiendo API-->
+        <script >  
+         function CargarInfo(){
+                    var cancion=sessionStorage.ID
+                    var title= document.querySelector('#DETALLES')
+                
+                fetch(`http://127.0.0.1:3000/CANCIONES/${cancion}`)
+                .then(response => response.json())
+                .catch(error => {
+                    console.error
+                })
+                .then(res=> {
+                    console.log(res)
+                    title.innerHTML= `
+                    <div class="resume-section-content">
+                    <center>
+                        <h1 class="mb-0">
+                        INFORMACION
+                        <span class="text-primary">DE LA CANCION</span>
+                    </h1>
+                    <div class="subheading mb-5">
+                        USAC-Facultad de Ingeniería
+                    </div>
+                    </center>
+                    
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="${res.linkYT}" allowfullscreen></iframe>
+                          </div>
+                          
+                    <br>
+                    <br>
+                    <br>
+                   <center>
+                    <form>
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                            <img src="${res.imagen}"  class="img-thumbnail">
+                            <p class="lead mb-5">${res.nombre}</p>
+                          </div>
+                          
+                          <div class="form-group col-md-6">
+                            <div class="alert alert-info" >ARTISTA: ${res.artista}</div>
+                            <div class="alert alert-secondary" >ALBUM: ${res.album}</div>
+                            <div class="alert alert-info" >FECHA DE LANZAMIENTO: ${res.fecha}</div>
+                          </div>
+                          
+                          <div class="form-group" id="COMENTS">
+                                
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" id="COMENTARIO" rows="3"></textarea>
+                        </div>
+                        <center>
+                            <button onclick="GUARDARCOMENT()" type="button" class="btn btn-outline-secondary">GUARDAR COMENTARIOS</button>
+                        </center>
+                       
+                      </form>
+                   </center>
+                       
+                         <br>
+                        
+                    
+                    
+                </div>
+                    `    
+                    CARGARCOMENTS()   
+                })
+                
+                }         
+           function GUARDARCOMENT(){
+            var usuario=sessionStorage.usuario
+            var id=sessionStorage.ID
+            var comentario=document.querySelector('#COMENTARIO').value
+            if(comentario!=""){
+                        var objecto = {
+                        'comentario': comentario,
+                        'usuario': usuario
+                    }
+                    console.log(objecto)
+                    
+                    fetch(`http://127.0.0.1:3000/COMENTARIO/${id}`, {
+                        method: 'POST',
+                        body: JSON.stringify(objecto),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+        
+                    }).then(res => res.json())
+                        .catch(err => {
+                            console.error('Error:', err)
+                            alert("Ocurrio un error, ver la consola")
+                        })
+                        .then(response => {
+                            console.log(response);
+                            console.log(response.message)
+                           
+                        })
+                    }else{
+                        alert("DEBE LLENAR TODOS LOS CAMPOS")
+                    }
+
+           }
+
+           function CARGARCOMENTS(){
+            var CO= document.querySelector('#COMENTS')
+            var cancion=sessionStorage.ID
+                fetch(`http://127.0.0.1:3000/COMENTARIOS/${cancion}`)
+                .then(response => response.json())
+                .catch(error => {
+                    console.error
+                })
+                .then(res=> {
+                    console.log(res)
+                    
+                    for (var i in res) {
+                        console.log(res[i])
+                        CO.innerHTML+= `
+                        <div class="alert alert-secondary" >${res[i].usuario}: ${res[i].comentario}</div>
+                        `   
+                    }
+                       
+                })
+           }
+          
+        </script>
+    </body>
+</html>

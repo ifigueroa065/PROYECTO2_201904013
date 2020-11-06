@@ -3,11 +3,17 @@ from flask_cors import CORS
 from Usuario import  Us
 from Canciones import Cancion
 import json
+from Comentarios import Comentario
+from Playlist import Play
 
 app=Flask(__name__)
 CORS(app)
 #ARREGLOS PARA ALMACENAR DATOS
 cont_canciones=0
+cont_solicitudes=0
+
+PLAYLIST=[]
+COMENTARIOS=[]
 USERS=[]
 CANCIONES=[]
 SOLICITUDES=[]
@@ -17,10 +23,17 @@ USERS.append(Us('ALEJANDRO','GER','ale','sol','1'))
 USERS.append(Us('PACO','LOF','pac','pac14','0'))
 USERS.append(Us('PABLO','VALLE','cato','taquito1','1'))
 
-SOLICITUDES.append(Cancion("A","A","A","A","A","A","A","A"))
-SOLICITUDES.append(Cancion("b","b","b","b","b","b","b","b"))
-SOLICITUDES.append(Cancion("A","A","A","A","A","A","A","A"))
+SOLICITUDES.append(Cancion("A","A","A","A","A","A","A",112))
+SOLICITUDES.append(Cancion("b","b","b","b","b","b","b",22))
+SOLICITUDES.append(Cancion("A","A","A","A","A","A","A",33))
 
+COMENTARIOS.append(Comentario("SI SALE","MARLON",1))
+COMENTARIOS.append(Comentario("NO SALE","MARLON",1))
+COMENTARIOS.append(Comentario("TALVEZ SALE","MARLON",1))
+
+PLAYLIST.append(Play("cato",0))
+PLAYLIST.append(Play("jose",1))
+PLAYLIST.append(Play("cato",2))
 
 
 @app.route('/', methods=['GET'])
@@ -63,7 +76,56 @@ def MOSTRARCANCIONES():
          }
         TempZ.append(Temp3)
     res = jsonify(TempZ)
-    return(res)    
+    return(res)
+
+#VISTA GENERAL DE SOLICITUDES
+@app.route('/SOLICITUDES', methods=['GET'])
+def MOSTRARSOLICITUDES():
+    global SOLICITUDES
+    TempZ = []
+    for i in SOLICITUDES:
+        Temp3 = {
+            'nombre' : i.getNombre(),
+            'artista' : i.getArtista(), 
+            'album' : i.getAlbum(),
+            'imagen' : i.getImagen(),
+            'fecha' : i.getFecha(),
+            'linkS' : i.getLinkS(),
+            'linkYT' : i.getLinkYT(),
+            'identificador' : i.getID()
+         }
+        TempZ.append(Temp3)
+    res = jsonify(TempZ)
+    return(res)     
+
+#VISTA GENERAL COMENTARIOS
+@app.route('/COMENTARIOS', methods=['GET'])
+def MOSTRARCOMENTS():
+    global COMENTARIOS
+    TempZ = []
+    for i in COMENTARIOS:
+        Temp3 = {
+            'comentario' : i.getComentario(),
+            'usuario' : i.getUsuario(), 
+            'id' : i.getID()
+         }
+        TempZ.append(Temp3)
+    res = jsonify(TempZ)
+    return(res)
+
+#VISTA GENERAL PLAYLIST
+@app.route('/PLAYLIST', methods=['GET'])
+def MOSTRARPLAYLIST():
+    global PLAYLIST
+    TempZ = []
+    for i in PLAYLIST:
+        Temp3 = {
+            'usuario' : i.getUsuario(), 
+            'id' : i.getID()
+         }
+        TempZ.append(Temp3)
+    res = jsonify(TempZ)
+    return(res)
 
 #BUSCAR NOMBRE ESPECIFICO 
 @app.route('/Usuario/<string:usuario>', methods=['GET'])
@@ -141,18 +203,94 @@ def ActualizarUsuario(usuario):
     respuesta = jsonify(DAT)
     return(respuesta)
 
-#ELIMINAR UN DATO ESPECIFICO 
-@app.route('/Usuario/<string:nombre>', methods=['DELETE'])
-def EliminarUsuario(nombre):
-    global USERS
-    for i in range(len(USERS)):
-        if nombre == USERS[i].getNombre():
-            del USERS[i]
-            break
-    respuesta = jsonify({'message':'se elimino correctamente'})
+#BUSCAR COMENTARIOS ESPECÍFICOS   
+@app.route('/COMENTARIOS/<int:id>', methods=['GET'])
+def COMENT(id):
+    global COMENTARIOS
+    Temp=[]
+    for i in COMENTARIOS:
+        if i.getID()==id:
+            Temp2 = {
+            'comentario' : i.getComentario(),
+            'usuario' : i.getUsuario()
+            }
+            Temp.append(Temp2)
+
+    respuesta = jsonify(Temp)
     return(respuesta)    
 
-    
+#BUSCAR PLAYLIST DE USUARIO ESPECÍFICO  
+@app.route('/PLAYLIST/<string:usuario>', methods=['GET'])
+def VERPLAYLIST(usuario):
+    global PLAYLIST,CANCIONES
+    Temp=[]
+    for i in PLAYLIST:
+        if i.getUsuario()==usuario:
+            ident=i.getID
+            for j in CANCIONES:
+                if ident==j.getID:
+                    Temp3 = {
+                        'nombre' : i.getNombre(),
+                        'artista' : i.getArtista(), 
+                        'album' : i.getAlbum(),
+                        'imagen' : i.getImagen(),
+                        'fecha' : i.getFecha(),
+                        'linkS' : i.getLinkS(),
+                        'linkYT' : i.getLinkYT()
+                        }
+                    Temp.append(Temp3)
+                    break    
+
+    respuesta = jsonify(Temp)
+    return(respuesta) 
+
+#MODIFICAR CANCION ESPECÍFICA
+@app.route('/CANCIONES/<int:id>', methods=['PUT'])
+def ActualizarCANCION(id):
+    global CANCIONES
+    cor=True
+    nombre = request.json['nombre']
+    artista = request.json['artista']
+    album = request.json['album']
+    imagen = request.json['imagen']
+    fecha = request.json['fecha']
+    linkSpotify = request.json['linkS']
+    linkYoutube = request.json['linkYT'] 
+
+        
+    if cor==True:
+        for i in range(len(CANCIONES)):
+            if id == CANCIONES[i].getID():
+                CANCIONES[i].setNombre(nombre)
+                CANCIONES[i].setArtista(artista)
+                CANCIONES[i].setAlbum(album)
+                CANCIONES[i].setImagen(imagen)
+                CANCIONES[i].setFecha(fecha)
+                CANCIONES[i].setLinkS(linkSpotify)
+                CANCIONES[i].setLinkYT(linkYoutube)                
+                DAT = {
+                    'message':'Sucess'
+                }  
+                break
+    else:
+       DAT = {
+            'message':'Failed',
+            'reason':'EL USUARIO YA ESTÁ EN USO'
+        }   
+    respuesta = jsonify(DAT)
+    return(respuesta)
+
+#ELIMINAR UN DATO ESPECIFICO 
+@app.route('/Usuario/<string:usuario>', methods=['DELETE'])
+def EliminarUsuario(usuario):
+    global USERS
+    for i in range(len(USERS)):
+        if usuario == USERS[i].getUsuario():
+            del USERS[i]
+            break
+    respuesta = jsonify({'message':'se eliminó usuario correctamente'})
+    return(respuesta)    
+
 
 #AGREGAR USUARIOS
 @app.route('/Usuarios/', methods=['POST'])
@@ -285,7 +423,7 @@ def SIGNUPADMIN():
 #SOLICITAR UNA CANCION
 @app.route('/SOLICITAR/', methods=['POST'])
 def CrearSolicitud():
-    global SOLICITUDES
+    global SOLICITUDES,cont_solicitudes
     nombre = request.json['NombreS']
     artista = request.json['ArtistaS']
     album = request.json['AlbumS']
@@ -293,10 +431,11 @@ def CrearSolicitud():
     fecha = request.json['FechaS']
     linkSpotify = request.json['LinkSS']
     linkYoutube = request.json['LinkYTS'] 
-    ident=0
+    ident=cont_solicitudes
 
     NSOLI=Cancion(nombre,artista,album,imagen,fecha,linkSpotify,linkYoutube,ident)
     SOLICITUDES.append(NSOLI)
+    cont_solicitudes+=1
 
     respo=jsonify({'message':'SE CREÓ SOLICITUD'})
     return(respo)
@@ -320,6 +459,62 @@ def AGREGARCANCION():
 
     respo=jsonify({'message':'SE CARGÓ UNA CANCION'})
     return(respo)    
+
+#AGREGAR UNA CANCION DE SOLICITUDES
+@app.route('/SOLICITUDES/<int:id>', methods=['POST'])
+def AGREGARSOLICITUD(id):
+    global CANCIONES,cont_canciones
+    global SOLICITUDES,cont_solicitudes
+
+    for i in SOLICITUDES:
+        if i.getID()==id:
+            nombre = i.getNombre() 
+            artista =  i.getArtista()
+            album =  i.getAlbum()
+            imagen = i.getImagen()
+            fecha = i.getFecha()
+            linkSpotify =i.getLinkS() 
+            linkYoutube =i.getLinkYT()
+            break
+    
+    ident=cont_canciones
+    NSOLI=Cancion(nombre,artista,album,imagen,fecha,linkSpotify,linkYoutube,ident)
+    CANCIONES.append(NSOLI)
+    cont_canciones +=1
+    for i in range(len(SOLICITUDES)):
+        if id == SOLICITUDES[i].getID():
+            del SOLICITUDES[i]
+            break
+
+    respo=jsonify({'message':'SE ACEPTÓ UNA CANCION'})
+    return(respo)  
+
+#RECHAZAR UNA SOLICITUD
+@app.route('/SOLICITUDES/<int:id>', methods=['DELETE'])
+def RECHAZARSOLICITUD(id):
+    global SOLICITUDES,cont_solicitudes
+    for i in range(len(SOLICITUDES)):
+        if id == SOLICITUDES[i].getID():
+            del SOLICITUDES[i]
+            break
+
+    respo=jsonify({'message':'SE RECHAZÓ LA CANCION'})
+    return(respo)
+
+     
+#AGREGAR COMENTARIOS
+@app.route('/COMENTARIO/<int:id>', methods=['POST'])
+def SAVECOMENT(id):
+    global COMENTARIOS
+    
+    comen=request.json['comentario']
+    usuario=request.json['usuario']
+    NCOMENT=Comentario(comen,usuario,id)
+    COMENTARIOS.append(NCOMENT)
+
+    respo=jsonify({'message':'SE AGREGÓ EL COMENTARIO'})
+    return(respo)
+
 
 if __name__ == "__main__":
     app.run(port=3000,debug=True)

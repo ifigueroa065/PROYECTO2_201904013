@@ -18,14 +18,14 @@ USERS=[]
 CANCIONES=[]
 SOLICITUDES=[]
 
-USERS.append(Us('DARLENY_MI_AMOR','T0XICA_YUMAN','admin','1234','0'))
-USERS.append(Us('ALEJANDRO','GER','ale','sol','1'))
-USERS.append(Us('PACO','LOF','pac','pac14','0'))
-USERS.append(Us('PABLO','VALLE','cato','taquito1','1'))
+USERS.append(Us('Admin','Mamoncito','admin','1234','0'))
+USERS.append(Us('Pollo','GER','ale','sol','1'))
+USERS.append(Us('Solovino','LOF','pac','pac14','0'))
+USERS.append(Us('SOL','VALLE','cato','taquito1','1'))
 
-SOLICITUDES.append(Cancion("A","A","A","A","A","A","A",112))
-SOLICITUDES.append(Cancion("b","b","b","b","b","b","b",22))
-SOLICITUDES.append(Cancion("A","A","A","A","A","A","A",33))
+SOLICITUDES.append(Cancion("A","A","A","A","A","A","A",0))
+SOLICITUDES.append(Cancion("b","b","b","b","b","b","b",1))
+SOLICITUDES.append(Cancion("A","A","A","A","A","A","A",2))
 
 COMENTARIOS.append(Comentario("SI SALE","MARLON",1))
 COMENTARIOS.append(Comentario("NO SALE","MARLON",1))
@@ -215,7 +215,6 @@ def COMENT(id):
             'usuario' : i.getUsuario()
             }
             Temp.append(Temp2)
-
     respuesta = jsonify(Temp)
     return(respuesta)    
 
@@ -223,26 +222,25 @@ def COMENT(id):
 @app.route('/PLAYLIST/<string:usuario>', methods=['GET'])
 def VERPLAYLIST(usuario):
     global PLAYLIST,CANCIONES
-    Temp=[]
+    TEMP=[]
     for i in PLAYLIST:
         if i.getUsuario()==usuario:
-            ident=i.getID
+            CANCION=i.getID()
             for j in CANCIONES:
-                if ident==j.getID:
+                if CANCION==j.getID():
                     Temp3 = {
-                        'nombre' : i.getNombre(),
-                        'artista' : i.getArtista(), 
-                        'album' : i.getAlbum(),
-                        'imagen' : i.getImagen(),
-                        'fecha' : i.getFecha(),
-                        'linkS' : i.getLinkS(),
-                        'linkYT' : i.getLinkYT()
-                        }
-                    Temp.append(Temp3)
-                    break    
-
-    respuesta = jsonify(Temp)
-    return(respuesta) 
+                    'nombre' : j.getNombre(),
+                    'artista' : j.getArtista(), 
+                    'album' : j.getAlbum(),
+                    'imagen' : j.getImagen(),
+                    'fecha' : j.getFecha(),
+                    'linkS' : j.getLinkS(),
+                    'linkYT' : j.getLinkYT()
+                    }
+                    TEMP.append(Temp3)
+                    break
+    res = jsonify(TEMP)    
+    return(res)    
 
 #MODIFICAR CANCION ESPECÍFICA
 @app.route('/CANCIONES/<int:id>', methods=['PUT'])
@@ -280,7 +278,7 @@ def ActualizarCANCION(id):
     respuesta = jsonify(DAT)
     return(respuesta)
 
-#ELIMINAR UN DATO ESPECIFICO 
+#ELIMINAR UN USUARIO ESPECIFICO 
 @app.route('/Usuario/<string:usuario>', methods=['DELETE'])
 def EliminarUsuario(usuario):
     global USERS
@@ -289,6 +287,17 @@ def EliminarUsuario(usuario):
             del USERS[i]
             break
     respuesta = jsonify({'message':'se eliminó usuario correctamente'})
+    return(respuesta)    
+
+#ELIMINAR UNA CANCION ESPECIFICA
+@app.route('/CANCIONES/<int:id>', methods=['DELETE'])
+def EliminarCancion(id):
+    global CANCIONES
+    for i in range(len(CANCIONES)):
+        if id == CANCIONES[i].getID():
+            del CANCIONES[i]
+            break
+    respuesta = jsonify({'message':'se eliminó cancion correctamente'})
     return(respuesta)    
 
 
@@ -501,7 +510,7 @@ def RECHAZARSOLICITUD(id):
     respo=jsonify({'message':'SE RECHAZÓ LA CANCION'})
     return(respo)
 
-     
+
 #AGREGAR COMENTARIOS
 @app.route('/COMENTARIO/<int:id>', methods=['POST'])
 def SAVECOMENT(id):
@@ -513,6 +522,32 @@ def SAVECOMENT(id):
     COMENTARIOS.append(NCOMENT)
 
     respo=jsonify({'message':'SE AGREGÓ EL COMENTARIO'})
+    return(respo)
+
+#AGREGAR CANCION A PLAYLIST
+@app.route('/PLAYLIST/<int:id>', methods=['POST'])
+def SAVECANCION(id):
+    global PLAYLIST,CANCIONES
+    val=True
+    usuario=request.json['usuario']
+    
+    for i in PLAYLIST:
+        if i.getUsuario()==usuario:
+                if i.getID()==id:  
+                    val=False
+                    break
+
+    if val==True:
+        NCOMENT=Play(usuario,id)
+        PLAYLIST.append(NCOMENT)
+        DATO={
+            'message':'Sucess'
+        }    
+    else:
+        DATO={
+            'message':'Failed'
+        }
+    respo=jsonify(DATO)
     return(respo)
 
 

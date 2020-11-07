@@ -68,10 +68,10 @@
                         </tr>
                     </thead>
                     <tbody id="TBODY">
-                        
-                        
-                        
-                            
+
+
+
+
                     </tbody>
                 </table>
 
@@ -166,7 +166,7 @@
 
             if (condicion = true) {
                 alert("Se cargaron Correctamente, Presione el boton mostrar canciones")
-            
+
             }
         }
 
@@ -190,11 +190,11 @@
   
     <th>${res[i].nombre}</th>
     <th style="width: 5%;">
-        <center><button style="margin: 30%;" type="button" onclick="VerCancion(this)" value="${res[i].identificador}" class="btn btn-success">DETALLES</button></center>
+        <center><button style="margin: 30%;" type="button" onclick="VerCancion(this)" value="${res[i].identificador}" class="btn btn-outline-success">DETALLES</button></center>
     </th>
     <th style="width: 25%;" >
 
-            <button style="margin:10%;" type="button" class="btn btn-warning">AGREGAR A MI PLAYLIST</button>
+            <button onclick="AgregarCancion(this)"  value="${res[i].identificador}" style="margin:10%;" type="button" class="btn btn-outline-primary">AGREGAR A MI PLAYLIST</button>
        
         
     </th>
@@ -209,13 +209,47 @@
         function IniciarSesion() {
             location.href = "INICIO.html"
         }
-        function VerCancion(boton){
-            var id= boton.value
-            sessionStorage.setItem("ID",id)
+        function VerCancion(boton) {
+            var id = boton.value
+            sessionStorage.setItem("ID", id)
             console.log(id)
-            location.href="DETALLES_CANCION.html"
+            location.href = "DETALLES_CANCION.html"
         }
 
+        function AgregarCancion(boton) {
+            var usuario = sessionStorage.usuario
+            var id = boton.value
+            var objecto = {
+                'usuario': usuario
+            }
+            console.log(objecto)
+
+            fetch(`http://127.0.0.1:3000/PLAYLIST/${id}`, {
+                method: 'POST',
+                body: JSON.stringify(objecto),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+
+            }).then(res => res.json())
+                .catch(err => {
+                    console.error('Error:', err)
+                    alert("Ocurrio un error, ver la consola")
+                })
+                .then(response => {
+                    console.log(response);
+                    console.log(response.message)
+                    if (response.message=="Sucess"){
+                        alert("SE AGREGÓ CORRECTAMENTE A MI PLAYLIST")
+                    }else{
+                        alert("YA ESTÁ EN TU PLAYLIST")
+                    }
+                })
+
+
+
+        }
+        
         function Registrar() {
             var nombreR = document.querySelector('#nombreR').value
             var apellidoR = document.querySelector('#apellidoR').value

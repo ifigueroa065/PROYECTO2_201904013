@@ -101,9 +101,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script>
         function MostrarCanciones() {
+            var logeado=sessionStorage.usuario
             var contenido = document.querySelector('#TBODY')
             contenido.innerHTML = ""
-            fetch('http://127.0.0.1:3000/CANCIONES')
+            fetch(`http://127.0.0.1:3000/PLAYLIST/${logeado}`)
                 .then(response => response.json())
                 .catch(error => {
                     console.log(error)
@@ -114,21 +115,10 @@
                         console.log(res[i])
                         contenido.innerHTML +=
                             `<tr>
-                                <th style="width: 13%;">
-                                    <img src="${res[i].imagen}" class="img-fluid" height="100%" width="100%">
-                            </th>
-                            <th>${res[i].nombre}</th>
-                            <th style="width: 5%;">
-                                <center><button type="button" onclick="VerCancion(this)" value="${res[i].identificador}" class="btn btn-success">MODIFICAR</button></center>
-                            </th>
-                            <th style="width: 5%;">
-                                <center><button type="button" class="btn btn-danger">ELIMINAR</button></center>
-                            </th>
-                            <th style="width: 5%;"><button type="button" class="btn btn-warning">COMENTARIOS</button>
-                            </th>
-                                
-                    
-                            </tr>`
+    
+    <th><iframe src="${res[i].linkS}" width="350" height="430" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></th>
+  
+    <th> <iframe width="560" height="315" src="${res[i].linkYT}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></th>`
                     }
                 })
         }

@@ -43,33 +43,28 @@
             <div class="resume-section-content">
                 <center>
                     <h1 class="mb-0">
-                        USUARIOS EN
-                        <span class="text-primary">SISTEMA</span>
+                        COMENTARIOS
+                        <span class="text-primary">EN EL SISTEMA</span>
                     </h1>
                     <div class="subheading mb-5">
                         MUSIC STATION
                     </div>
                 </center>
-                <button onclick="GENERARPDF()" type="button" class="btn btn-success">GENERAR REPORTE</button>
+                <button  type="button" class="btn btn-success">GENERAR REPORTE</button>
                            
-                <table class="table table-sm table-dark" >
+                <table  class="table table-striped table-dark">
                     <thead>
+                     <tbody id="TBODY">
                         <tr>
-                            <th scope="col">
-                                <center>NOMBRE</center>
-                            </th>
-                            <th scope="col">
-                                <center>APELLIDO</center>
-                            </th>
                             <th scope="col">
                                 <center>USUARIO</center>
                             </th>
-
+                            <th scope="col">
+                                <center>COMENTARIO</center>
+                            </th>
                         </tr>
-                    </thead>
-                    <tbody id="TBODY">
-
                     </tbody>
+                    </thead>
                 </table>
 
 
@@ -98,10 +93,10 @@
     <!-- consumiendo API-->
     <script>
         function CargarInfo() {
-
+            var id=sessionStorage.ID
             var tablita = document.querySelector('#TBODY')
             tablita.innerHTML= ` `
-            fetch('http://127.0.0.1:3000/Usuario')
+            fetch(`http://127.0.0.1:3000/COMENTARIOS/${id}`)
                 .then(response => response.json())
                 .catch(error => {
                     console.error
@@ -112,82 +107,16 @@
                         console.log(res[i])
                         tablita.innerHTML +=
                             `
-                            <tr>
-                            <th><center>${res[i].nombre}</center></th>
-                            <th><center>${res[i].apellido}</center></th>
+                        <tr>
                             <th><center>${res[i].usuario}</center></th>
-                            
-                            <th style="width: 10%;">
-                                <center><button onclick="verUsuario(this)" value="${res[i].usuario}" type="button" class="btn btn-info">MODIFICAR</button></center>
-                            </th>
-                            <th style="width: 10%;">
-                                <center><button  onclick="DELUSUARIO(this)" value="${res[i].usuario}" type="button" class="btn btn-danger">ELIMINAR</button></center>
-                            </th>
+                            <th><center>${res[i].comentario}</center></th>
                         </tr>
                             `
                     }
 
                 })
         }
-        function GENERARPDF(){
-                var pegar =document.getElementById("TBODY").innerHTML;
-                var pdf = window.open("","","width=1000,heigth=1000");
-                pdf.document.write("<html><head>");
-                pdf.document.write("<title>PDF</title>");
-                pdf.document.write("<body>");
-                pdf.document.write("<center>");
-                pdf.document.write(`<h1 class="mb-0">USUARIOS EN SISTEMA<h1>`);
-                pdf.document.write("</center>");
-                pdf.document.writeln(`<table class="table table-sm table-dark">  `);
-                pdf.document.writeln("<thead>");
-                pdf.document.writeln("<tr>");
-                pdf.document.writeln("<th>");
-                pdf.document.writeln("<center>NOMBRE</center>");
-                pdf.document.writeln("</th>");
-                pdf.document.writeln("<th>");
-                pdf.document.writeln("<center>APELLIDO</center>");
-                pdf.document.writeln("</th>");
-                pdf.document.writeln("<th>");
-                pdf.document.writeln("<center>usuario</center>");
-                pdf.document.writeln("</th>");
-                pdf.document.writeln("</tr>");
-                pdf.document.writeln("</thead>");
-                pdf.document.writeln("<tbody>");
-                pdf.document.write(pegar);
-                pdf.document.writeln("</tbody>");
-                pdf.document.writeln("</table>");
-                pdf.document.write("</body></html>");
-                pdf.document.close();
-                pdf.print();
 
-
-            }
-
-        function verUsuario(boton) {
-            var usuario = boton.value
-            sessionStorage.setItem("US", usuario)
-            location.href = "PERFIL.html"
-
-        }
-        
-        function DELUSUARIO(boton) {
-            var id = boton.value
-            var cuerpo=document.querySelector('#TBODY')
-            fetch(`http://127.0.0.1:3000/Usuario/${id}`, {
-                method: 'DELETE'
-
-            }).then(res => res.json())
-                .catch(err => {
-                    console.error('Error:', err)
-                    alert("Ocurrio un error, ver la consola")
-                })
-                .then(response => {
-                    console.log(response);
-                    console.log(response.message)
-                    alert("SE ELIMINÓ CORRECTAMENTE")
-                    CargarInfo()
-                })
-        }
 
     </script>
 </body>

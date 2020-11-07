@@ -50,7 +50,7 @@
          function CargarInfo(){
                     var cancion=sessionStorage.ID
                     var title= document.querySelector('#DETALLES')
-                
+                    title.innerHTML=`` 
                 fetch(`http://127.0.0.1:3000/CANCIONES/${cancion}`)
                 .then(response => response.json())
                 .catch(error => {
@@ -142,7 +142,8 @@
                         .then(response => {
                             console.log(response);
                             console.log(response.message)
-                           
+                           alert("GRACIAS POR TU COMENTARIO CRACK")
+                           CargarInfo()
                         })
                     }else{
                         alert("DEBE LLENAR TODOS LOS CAMPOS")

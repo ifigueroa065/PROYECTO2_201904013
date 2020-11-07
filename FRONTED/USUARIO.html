@@ -15,7 +15,7 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
     </head>
-    <body id="page-top">
+    <body id="page-top" onload="CargarInfo()">
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
             <a class="navbar-brand js-scroll-trigger" href="#page-top">
@@ -38,40 +38,28 @@
 
         <div class="container-fluid p-0">
             <!-- About-->
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img class="d-block w-100" src="assets/img/SLIDE1.jpg" >
+                  </div>
+                  
+                </div>
+            </div>
+              
             <section class="resume-section" id="about">
                 <div class="resume-section-content">
-                    <h1 class="mb-0">
-                        BIENVENIDO
-                        <span class="text-primary">USUARIO</span>
+                    <h1 class="mb-0" id="TITULO">
+                       
                     </h1>
                    
 
                     <p class="lead mb-5">Facultad de Ingeniería Usac</p>
-                   
+                    
                 </div>
             </section>
             <hr class="m-0" />
-            <!-- Experience-->
-            <section class="resume-section" id="experience">
-                <div class="resume-section-content">
-                    <h2 class="mb-5">Experience</h2>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Senior Web Developer</h3>
-                            <div class="subheading mb-3">Intelitec Solutions</div>
-                            <p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.</p>
-                        </div>
-                        <div class="flex-shrink-0"><span class="text-primary">March 2013 - Present</span></div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Web Developer</h3>
-                            <div class="subheading mb-3">Intelitec Solutions</div>
-                            <p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.</p>
-                        </div>
-                       
-                </div>
-            </section>
+           
             <hr class="m-0" />
             <!-- Education-->
            
@@ -86,9 +74,10 @@
             <section class="resume-section" id="sesion">
                 <div class="resume-section-content">
                     <h2 class="mb-5">Cerrar Sesión</h2>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/vWFPduhaUB4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/vWFPduhaUB4" allowfullscreen></iframe>
+                      </div>
+                   
                     <button onclick="CerrarSesion()" type="button" class="btn btn-primary btn-lg btn-block">CERRAR SESIÓN</button>
                 </div>
 
@@ -144,6 +133,24 @@
             function CerrarSesion(){
                 location.href="INICIO.html"
             }
+
+            function CargarInfo(){
+                    var logeado=sessionStorage.usuario
+                    var title= document.querySelector('#TITULO')
+                
+                fetch(`http://127.0.0.1:3000/Usuario/${logeado}`)
+                .then(response => response.json())
+                .catch(error => {
+                    console.error
+                })
+                .then(res=> {
+                    console.log(res)
+                   title.innerHTML= `BIENVENIDO
+                            <span class="text-primary">${res.nombre}</span>`
+
+                            
+                })
+                }
         </script>
     </body>
 </html>

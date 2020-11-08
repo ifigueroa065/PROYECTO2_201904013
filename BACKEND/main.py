@@ -5,6 +5,7 @@ from Canciones import Cancion
 import json
 from Comentarios import Comentario
 from Playlist import Play
+import re
 
 app=Flask(__name__)
 CORS(app)
@@ -25,7 +26,7 @@ USERS.append(Us('SOL','VALLE','cato','taquito1','1'))
 
 SOLICITUDES.append(Cancion("A","A","A","A","A","A","A",0))
 SOLICITUDES.append(Cancion("b","b","b","b","b","b","b",1))
-SOLICITUDES.append(Cancion("A","A","A","A","A","A","A",2))
+CANCIONES.append(Cancion("A","A","A","A","A","A","A",2))
 
 COMENTARIOS.append(Comentario("SI SALE","MARLON",1))
 COMENTARIOS.append(Comentario("NO SALE","MARLON",1))
@@ -34,7 +35,6 @@ COMENTARIOS.append(Comentario("TALVEZ SALE","MARLON",1))
 PLAYLIST.append(Play("cato",0))
 PLAYLIST.append(Play("jose",1))
 PLAYLIST.append(Play("cato",2))
-
 
 @app.route('/', methods=['GET'])
 def Rutainicial():
@@ -550,6 +550,27 @@ def SAVECANCION(id):
     respo=jsonify(DATO)
     return(respo)
 
+#BUSCADOR
+@app.route('/BUSCAR/<string:word>', methods=['GET'])
+def BUSCADOR(word):
+    global CANCIONES
+    Temp=[]
+    for i in CANCIONES:
+        chain=i.getNombre()
+        if chain.find(word)>=0:
+            Temp2 = {
+            'nombre' : i.getNombre(),
+            'artista' : i.getArtista(), 
+            'album' : i.getAlbum(),
+            'imagen' : i.getImagen(),
+            'fecha' : i.getFecha(),
+            'linkS' : i.getLinkS(),
+            'linkYT' : i.getLinkYT(),
+            'identificador' : i.getID()
+            }
+            Temp.append(Temp2)
+    respuesta = jsonify(Temp)
+    return(respuesta)    
 
 if __name__ == "__main__":
     app.run(port=3000,debug=True)

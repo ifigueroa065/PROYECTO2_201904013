@@ -27,7 +27,7 @@
         <a class="navbar-brand js-scroll-trigger" href="#page-top">
             <span class="d-block d-lg-none">MUSIC STATION</span>
             <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2"
-                    src="assets/img/LOL.jpg" alt="" /></span>
+                    src="assets/img/CANCIONES.png" alt="" /></span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
@@ -53,8 +53,12 @@
                     </div>
                 </center>
 
-
-
+                <form >
+                    <input id="PALABRA" type="text" class="form-control" placeholder="Nombre de la cancion">
+                    <br>
+                    <button onclick="BUSCAR()" type="button" class="btn btn-outline-success">BUSCAR</button>
+                  </form>
+                  <br> 
                 <table class="table table-sm table-dark">
                     <thead>
                         <tr>
@@ -305,7 +309,50 @@
                     }
                 })
         }
+        function BUSCAR(){
+            var buscar = document.querySelector('#PALABRA').value
+            var contenido = document.querySelector('#TBODY')
+            if(buscar!=""){
+                contenido.innerHTML = ` `
+            fetch(`http://127.0.0.1:3000/BUSCAR/${buscar}`)
+                .then(response => response.json())
+                .catch(error => {
+                    console.log(error)
+                })
+                .then(res => {
+                    console.log("HOLA")
+                    for (var i in res) {
+                        console.log("HOLA")
+                        console.log(res[i])
+                        contenido.innerHTML +=
+                            `
+                            <tr>
+    
+    <th><iframe src="${res[i].linkS}" width="350" height="430" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></th>
+  
+    <th>${res[i].nombre}</th>
+    <th style="width: 5%;">
+        <center><button style="margin: 30%;" type="button" onclick="VerCancion(this)" value="${res[i].identificador}" class="btn btn-outline-success">DETALLES</button></center>
+    </th>
+    <th style="width: 25%;" >
 
+            <button onclick="AgregarCancion(this)"  value="${res[i].identificador}" style="margin:10%;" type="button" class="btn btn-outline-primary">AGREGAR A MI PLAYLIST</button>
+       
+        
+    </th>
+        
+
+    </tr>
+                            `
+                    }
+                })
+            }else{
+                alert("INGRESE NOMBRE A BUSCAR")
+                MostrarCanciones()
+            }
+           
+
+        }
     </script>
 </body>
 

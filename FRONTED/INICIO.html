@@ -120,6 +120,10 @@
                                 </p>
                                 <p>Cada canción tiene informacion de lanzamiento, artista y mucho más!
                                 </p>
+
+
+                                <p>Contactanos: MSTATION@gmail.com
+                                </p>
                                   </div>
                                   <div class="col">
                                     
@@ -234,14 +238,12 @@
         			'password': password
         		}
         		console.log(object)
-
         		fetch('http://127.0.0.1:3000/Login/', {
         		method: 'POST',
         		body: JSON.stringify(object),
         		headers:{
         			'Content-Type' : 'application/json'
         		}
-
         		}).then(res => res.json())
         		.catch(err => {
         		console.error('Error:', err)
@@ -260,10 +262,10 @@
                     }else{
                         location.href="USUARIO.html" 
                     }
-
                 }
         		})
         	}
+            
 
             function Registrar(){
                 location.href="REGISTRO.html"

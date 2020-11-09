@@ -128,8 +128,6 @@
                     document.querySelector("#usuario").value=res.usuario
                     document.querySelector("#contra").value=res.password
                     document.querySelector("#contrar").value=res.password
-
-                            
                 })
                 }
 
@@ -178,6 +176,8 @@
                                 }
                             } else {
                                 alert("SE MODIFICÓ CORRECTAMENTE")
+                                sessionStorage.setItem("US",usuarioM)
+
                             }
                         })
                     }else{

@@ -19,22 +19,7 @@ USERS=[]
 CANCIONES=[]
 SOLICITUDES=[]
 
-USERS.append(Us('Admin','Mamoncito','admin','1234','0'))
-USERS.append(Us('Pollo','GER','ale','sol','1'))
-USERS.append(Us('Solovino','LOF','pac','pac14','0'))
-USERS.append(Us('SOL','VALLE','cato','taquito1','1'))
-
-SOLICITUDES.append(Cancion("A","A","A","A","A","A","A",0))
-SOLICITUDES.append(Cancion("b","b","b","b","b","b","b",1))
-CANCIONES.append(Cancion("A","A","A","A","A","A","A",2))
-
-COMENTARIOS.append(Comentario("SI SALE","MARLON",1))
-COMENTARIOS.append(Comentario("NO SALE","MARLON",1))
-COMENTARIOS.append(Comentario("TALVEZ SALE","MARLON",1))
-
-PLAYLIST.append(Play("cato",0))
-PLAYLIST.append(Play("jose",1))
-PLAYLIST.append(Play("cato",2))
+USERS.append(Us('Usuario','Maestro','admin','admin','0'))
 
 @app.route('/', methods=['GET'])
 def Rutainicial():

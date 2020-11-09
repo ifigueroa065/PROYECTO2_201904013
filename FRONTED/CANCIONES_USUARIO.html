@@ -110,7 +110,7 @@
             $('#file').parse({
                 config: {
 
-                    delimiter: ",",
+                    delimiter: ";",
                     complete: GuardarCanciones,
                 },
 
@@ -320,9 +320,9 @@
                     console.log(error)
                 })
                 .then(res => {
-                    console.log("HOLA")
+                    console.log("BUSCANDO")
                     for (var i in res) {
-                        console.log("HOLA")
+                        console.log("BUSCANDO")
                         console.log(res[i])
                         contenido.innerHTML +=
                             `

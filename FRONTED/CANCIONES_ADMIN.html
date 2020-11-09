@@ -65,7 +65,9 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <button onclick="MostrarCanciones()" type="button" class="btn btn-success">MOSTRAR CANCIONES</button>
-                           
+                                <button onclick="GENERARPDF()" type="button" class="btn btn-outline-info">GENERAR PDF</button>
+                               <br>
+                            </div>   
                         </div>
                     </form>
                     <br>
@@ -307,7 +309,36 @@
                     }
                 })
         }
+        function GENERARPDF(){
+                var pegar =document.getElementById("TBODY").innerHTML;
+                var pdf = window.open("","","width=10%,heigth=1000");
+                pdf.document.write("<html><head>");
+                pdf.document.write("<title>PDF</title>");
+                pdf.document.write("<body>");
+                pdf.document.write("<center>");
+                pdf.document.write(`<h1 class="mb-0">CANCIONES EN SISTEMA<h1>`);
+                pdf.document.write("</center>");
+                pdf.document.writeln(`<table class="table table-sm table-dark">  `);
+                pdf.document.writeln("<thead>");
+                pdf.document.writeln("<tr>");
+                pdf.document.writeln(`<th style="width: 13%;">`);
+                pdf.document.writeln("<center>PORTADA</center>");
+                pdf.document.writeln("</th>");
+                pdf.document.writeln("<th>");
+                pdf.document.writeln("<center>Nombre</center>");
+                pdf.document.writeln("</th>");
+                pdf.document.writeln("</tr>");
+                pdf.document.writeln("</thead>");
+                pdf.document.writeln("<tbody>");
+                pdf.document.write(pegar);
+                pdf.document.writeln("</tbody>");
+                pdf.document.writeln("</table>");
+                pdf.document.write("</body></html>");
+                pdf.document.close();
+                pdf.print();
 
+
+            }
     </script>
 </body>
 

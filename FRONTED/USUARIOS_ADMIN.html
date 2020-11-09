@@ -174,7 +174,10 @@
         
         function DELUSUARIO(boton) {
             var id = boton.value
-            var cuerpo=document.querySelector('#TBODY')
+            if(id="admin"){
+                alert("NO PUEDE BORRAR ESTE USUARIO")
+            }else{
+                var cuerpo=document.querySelector('#TBODY')
             fetch(`http://127.0.0.1:3000/Usuario/${id}`, {
                 method: 'DELETE'
 
@@ -189,6 +192,8 @@
                     alert("SE ELIMINÓ CORRECTAMENTE")
                     CargarInfo()
                 })
+            }
+           
         }
 
     </script>
